@@ -19,6 +19,12 @@ public class Main
 		a.searchCSV("A");
 		
 		StockChangePage page = new StockChangePage("Nathan");
+		
+		String b = a.searchCSV("B");
+		String c = a.searchCSV("C");
+		
+		System.out.println("String b = " + b);
+		System.out.println("String c = " + c);
 
 	}
 }

@@ -50,7 +50,7 @@ public class StockEdit
 	}
 	
 	// search for a values and return the amount of it
-	public void searchCSV(String SKU)
+	public String searchCSV(String SKU)
 	{
 		String file = "Stock.csv";
 		BufferedReader bf = null;
@@ -65,6 +65,7 @@ public class StockEdit
 				if (row[0].equals(SKU))
 				{
 					System.out.println("Amount of " + SKU + " = " + row[1]);
+					return row[1];
 				}
 			}
 		}
@@ -83,6 +84,8 @@ public class StockEdit
 				e.printStackTrace();
 			}
 		}
+		
+		return "None";
 	}
 	
 	// change stock of a given product by an ammount that can be entered at the page

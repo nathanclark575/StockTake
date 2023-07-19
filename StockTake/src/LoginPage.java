@@ -88,6 +88,7 @@ public class LoginPage implements ActionListener
 	{
 		if (e.getSource()==resetButton)
 		{
+			loginMessage.setText(null);
 			userIDField.setText("");
 			userPasswordField.setText("");
 		}
