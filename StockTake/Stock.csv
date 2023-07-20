@@ -1,4 +1,4 @@
-SKU,STOCK
-A,68
-B,2
-C,0
+SKU,STOCK,DESCRIPTION
+A,20,White Shirt - Size: Small
+B,2,jacket
+C,0,tie

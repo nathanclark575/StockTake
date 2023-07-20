@@ -8,23 +8,7 @@ public class Main
 	{
 		//LoginPage loginPage = new LoginPage();
 		
-		StockEdit a = new StockEdit();
-		
-		a.readAndPrint();
-		
-		a.searchCSV("A");
-		
-		a.changeStock("A", "1");
-		
-		a.searchCSV("A");
-		
-		StockChangePage page = new StockChangePage("Nathan");
-		
-		String b = a.searchCSV("B");
-		String c = a.searchCSV("C");
-		
-		System.out.println("String b = " + b);
-		System.out.println("String c = " + c);
+		StockChangePage s = new StockChangePage("Nathan");
 
 	}
 }

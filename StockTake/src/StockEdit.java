@@ -89,7 +89,7 @@ public class StockEdit
 	}
 	
 	// change stock of a given product by an ammount that can be entered at the page
-	public void changeStock(String SKU, String changeString)
+	public void changeStock(String SKU, int change)
 	{
 		File temp = new File("temp.csv");
 		File file = new File("Stock.csv");
@@ -115,7 +115,7 @@ public class StockEdit
 				if (row[0].equals(SKU))
 				{
 					String val = row[1];
-					int value = Integer.parseInt(val) + Integer.parseInt(changeString);
+					int value = Integer.parseInt(val) + change;
 					pw.println(row[0] + "," + Integer.toString(value));
 					
 				}
@@ -143,8 +143,46 @@ public class StockEdit
 			e.printStackTrace();
 		}
 		
-		// just need to work out how to store the new file under the old location
 		
+	}
+	
+	// get product description
+	public String productDescription(String sku)
+	{
+		File file = new File("Stock.csv");
+		String line = "";
 		
+		BufferedReader br = null;
+		
+		try
+		{
+			br = new BufferedReader(new FileReader(file));
+			while ((line = br.readLine()) != null)
+			{
+				String[] row = line.split(",");
+				
+				if (sku.equals(row[0]))
+				{
+					return row[2];
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				br.close();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		return "None";
 	}
 }

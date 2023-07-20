@@ -45,6 +45,15 @@ public class StockChangePage implements ActionListener
 	// for invalid SKU message
 	JLabel skuError = new JLabel("");
 	
+	// enter button to carry out stock change
+	JButton enterButton = new JButton("Enter");
+	
+	// button to take to StockShowPage
+	//JButton stockShowButton = new JButton("Stock.csv");
+	
+	// to show product description
+	JLabel productDescriptionLabel = new JLabel("");
+	JLabel productDescription = new JLabel("");
 	
 	
 	StockChangePage(String userID)
@@ -107,12 +116,33 @@ public class StockChangePage implements ActionListener
 		frame.add(stockChange);
 		
 		// skuError
-		skuError.setBounds(150, 150, 150, 35);
+		skuError.setBounds(140, 140, 150, 35);
 		skuError.setFont(new Font(null, Font.PLAIN, 15));
 		skuError.setForeground(Color.red);
 		skuError.setText("");
 		frame.add(skuError);
 		
+		// enter button for confiming a stock change
+		enterButton.setBounds(335, 175, 75, 25);
+		enterButton.addActionListener(this);
+		enterButton.setFocusable(false);
+		frame.add(enterButton);
+		
+		// button to take to StockShowPage
+		//stockShowButton.setBounds(50, 350, 100, 25);
+		//stockShowButton.addActionListener(this);
+		//stockShowButton.setFocusable(false);
+		//frame.add(stockShowButton);
+		
+		// to show product description
+		productDescriptionLabel.setBounds(50, 250, 100, 35);
+		productDescriptionLabel.setFont(new Font(null, Font.PLAIN, 10));
+		productDescriptionLabel.setText("Product Description:");
+		frame.add(productDescriptionLabel);
+		
+		productDescription.setBounds(150, 250, 150, 35);
+		productDescription.setFont(new Font(null, Font.PLAIN, 10));
+		frame.add(productDescription);
 		
 		frame.add(aLabel);
 		
@@ -149,6 +179,7 @@ public class StockChangePage implements ActionListener
 			// check the stock csv for the product and then display the stock amount and a change field
 			String sku = barcode.getText();
 			String skuCheck = stockEdit.searchCSV(sku);
+			String description = stockEdit.productDescription(sku);
 
 			
 			// if it is in the stock.csv file show the SKU and product count, add description later?
@@ -161,6 +192,8 @@ public class StockChangePage implements ActionListener
 				product.setText(sku);
 				
 				productCount.setText(skuCheck);
+				
+				productDescription.setText(description);
 	
 			}
 			
@@ -169,10 +202,41 @@ public class StockChangePage implements ActionListener
 			{
 				product.setText(null);
 				productCount.setText(null);
+				productDescription.setText(null);
 				skuError.setText("Invalid SKU");
 				
 			}
 			
 		}
+		
+		// if enter button, confirm the stock change to the stock.csv file
+		// need to take care of changing barcode at this point issue
+		if (e.getSource()==enterButton)
+		{
+			// check to see if input is valid
+			int change = 0;
+			
+			try
+			{
+				change = Integer.parseInt(stockChange.getText());
+			}
+			catch (Exception error)
+			{
+				skuError.setText("Invalid stock change");
+			}
+			
+			// if it is a valid input
+			if (change != 0)
+			{
+				skuError.setText(null);
+				stockEdit.changeStock(barcode.getText(), change);
+				productCount.setText(stockEdit.searchCSV(barcode.getText()));
+			}
+		}
+		
+		//if (e.getSource()==stockShowButton)
+		//{
+		//	StockShowPage stockShowPage = new StockShowPage();
+		//}
 	}
 }
