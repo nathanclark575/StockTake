@@ -1,12 +1,7 @@
-// page allows you to sign up by adding username and password, then gives option to return to login
-
-// finish action event and what to do when button is hit
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,57 +13,60 @@ import javax.swing.JTextField;
 
 public class SignUpPage implements ActionListener
 {
-	// set up of the page
+	// creating an IDandPasswords object so that the relevent methods can be used in order to manage acsess.
+	IdandPasswords idandPasswords = new IdandPasswords();
+	
+	// creating all of the objects used in the page
 	JFrame frame = new JFrame();
 	
-	// add the sign up option
+	// buttons
+	JButton setUpButton = new JButton("Set");
+	JButton loginButton = new JButton("Login");
+	
+	// Text Fields
 	JTextField userIDField = new JTextField();
 	JPasswordField userPasswordField = new JPasswordField();
-			
+	
+	// labels
 	JLabel userIDLabel = new JLabel("userID:");
 	JLabel userPasswordLabel = new JLabel("password:");
 	JLabel messageLabel = new JLabel("");
-			
-	JButton setUpButton = new JButton("Set");
 	
-	// for going back to login page
-	JButton loginButton = new JButton("Login");
-	
-	IdandPasswords idandPasswords = new IdandPasswords();
-	
+	// Form the sign up page
 	SignUpPage()
 	{
 		
-		userIDLabel.setBounds(50, 100, 75, 25);
-		userPasswordLabel.setBounds(50, 150, 75, 25);
-		
-		messageLabel.setBounds(125, 250, 250, 35);
-		messageLabel.setFont(new Font(null, Font.ITALIC, 15));
-		
-		userIDField.setBounds(125, 100, 200, 25);
-		userPasswordField.setBounds(125, 150, 200, 25);
-		
-		frame.add(userIDLabel);
-		frame.add(userPasswordLabel);
-		frame.add(messageLabel);
-		frame.add(userIDField);
-		frame.add(userPasswordField);
-		
-		// set button so that you can add password to id and passwords
+		// buttons
 		setUpButton.setBounds(50, 200, 75 ,25);
 		setUpButton.addActionListener(this);
 		setUpButton.setFocusable(false);
 		frame.add(setUpButton);
 		
-		// login button to take you back to login page
 		loginButton.setBounds(275, 200, 75, 25);
 		loginButton.addActionListener(this);
 		loginButton.setFocusable(false);
 		frame.add(loginButton);
 		
+		// Text Fields
+		userIDField.setBounds(125, 100, 200, 25);
+		frame.add(userIDField);
 		
+		userPasswordField.setBounds(125, 150, 200, 25);
+		frame.add(userPasswordField);
+		
+		// Labels
+		userIDLabel.setBounds(50, 100, 75, 25);
+		frame.add(userIDLabel);
+		
+		userPasswordLabel.setBounds(50, 150, 75, 25);
+		frame.add(userPasswordLabel);
+		
+		messageLabel.setBounds(125, 250, 250, 35);
+		messageLabel.setFont(new Font(null, Font.ITALIC, 15));
+		frame.add(messageLabel);
+		
+		// frame
 		frame.setTitle("Sign Up Page");
-		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(420, 420);
 		frame.setLayout(null);
@@ -76,28 +74,24 @@ public class SignUpPage implements ActionListener
 		
 	}
 	
-	// Set password or go to login page, depending on the chosed option
+	// Functionality of buttons, when pressed
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		
-		// gets userID and password, need to make user info on a updatable file, so it can be used
+		// set button, checks to see if userID already exsits, if not sets the userID and Password combination
 		if (e.getSource()==setUpButton)
 		{
 			String userID = userIDField.getText();
 			String userPassword = String.valueOf(userPasswordField.getPassword());
 			
-			
-			// check to see if userID exists
 			int resualt = 0;
-			
 			try 
 			{
 				resualt = idandPasswords.check(userID, userPassword);
 			} 
-			catch (FileNotFoundException e1) 
+			catch (Exception e1) 
 			{
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
@@ -109,19 +103,18 @@ public class SignUpPage implements ActionListener
 				return;
 			}
 			
+			// if not, add to file
 			idandPasswords.addToFile(userID, userPassword);
-			
 			messageLabel.setForeground(Color.black);
 			messageLabel.setText("userID and password set");
 			
 			return;
 		}
 		
-		// go back to login page
+		// login button, go back to login page
 		if (e.getSource()==loginButton)
 		{
 			frame.dispose();
-			IdandPasswords idandPasswords = new IdandPasswords();
 			LoginPage loginPage = new LoginPage();
 		}
 	}

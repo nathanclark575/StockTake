@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,65 +13,71 @@ import javax.swing.JTextField;
 
 public class LoginPage implements ActionListener
 {
+	
+	// creating an IDandPasswords object so that the relevent methods can be used in order to manage acsess.
 	IdandPasswords idandPasswords = new IdandPasswords();
 	
-	// Setting up of the page, with the button, labels and layout
+	// creating all of the objects used in the page
 	JFrame frame = new JFrame();
 	
+	// buttons
 	JButton loginButton = new JButton("Login");
 	JButton resetButton = new JButton("Reset");
+	JButton signUpButton = new JButton("Sign up");
+	
+	// Text fields
 	JTextField userIDField = new JTextField();
 	JPasswordField userPasswordField = new JPasswordField();
 	
+	// labels
 	JLabel userIDLabel = new JLabel("userID:");
 	JLabel userPasswordLabel = new JLabel("password:");
 	JLabel messageLabel = new JLabel("Login Page");
 	JLabel loginMessage = new JLabel("");
-	
-	
-	// sign up button
-	JButton signUpButton = new JButton("Sign up");
-	
-	HashMap<String, String> loginInfo =  new HashMap<String, String>();
 
-	// set all the bounds, and add all of the features to the frame
+	// form the login page
 	LoginPage()
 	{
-		
-		userIDLabel.setBounds(50, 100, 75, 25);
-		userPasswordLabel.setBounds(50, 150, 75, 25);
-		
-		messageLabel.setBounds(150, 50, 250, 35);
-		messageLabel.setFont(new Font(null, Font.ITALIC, 25));
-		
-		loginMessage.setBounds(100, 250, 250, 35);
-		loginMessage.setFont(new Font(null, Font.ITALIC, 10));
-		
-		userIDField.setBounds(125, 100, 200, 25);
-		userPasswordField.setBounds(125, 150, 200, 25);
-		
+
+		// buttons
 		loginButton.setBounds(125, 200, 100, 25);
 		loginButton.addActionListener(this);
 		loginButton.setFocusable(false);
+		frame.add(loginButton);
+		
 		resetButton.setBounds(225, 200, 100, 25);
 		resetButton.addActionListener(this);
 		resetButton.setFocusable(false);
+		frame.add(resetButton);	
 		
-		frame.add(userIDLabel);
-		frame.add(userPasswordLabel);
-		frame.add(messageLabel);
-		frame.add(loginMessage);
-		frame.add(userIDField);
-		frame.add(userPasswordField);
-		frame.add(loginButton);
-		frame.add(resetButton);
-		
-		// add sign up button, with actionlisterner
 		signUpButton.setBounds(50, 200, 75 ,25);
 		signUpButton.addActionListener(this);
 		signUpButton.setFocusable(false);
 		frame.add(signUpButton);
 		
+		// Text fields
+		userIDField.setBounds(125, 100, 200, 25);
+		frame.add(userIDField);
+		
+		userPasswordField.setBounds(125, 150, 200, 25);
+		frame.add(userPasswordField);
+		
+		// labels
+		userIDLabel.setBounds(50, 100, 75, 25);
+		frame.add(userIDLabel);
+		
+		userPasswordLabel.setBounds(50, 150, 75, 25);
+		frame.add(userPasswordLabel);
+		
+		messageLabel.setBounds(150, 50, 250, 35);
+		messageLabel.setFont(new Font(null, Font.ITALIC, 25));
+		frame.add(messageLabel);
+		
+		loginMessage.setBounds(150, 250, 250, 35);
+		loginMessage.setFont(new Font(null, Font.ITALIC, 10));
+		frame.add(loginMessage);
+
+		// frame
 		frame.setTitle("Login Page");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(420, 420);
@@ -82,10 +86,11 @@ public class LoginPage implements ActionListener
 		
 	}
 	
-	// Action listerner, checks for when buttons are pressed
+	// Functionality of buttons, when pressed
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		// reset button, clear userID and Password fields
 		if (e.getSource()==resetButton)
 		{
 			loginMessage.setText(null);
@@ -93,6 +98,7 @@ public class LoginPage implements ActionListener
 			userPasswordField.setText("");
 		}
 		
+		// login button, check to see if the userID and Password are a combination stored in the system
 		if (e.getSource()==loginButton)
 		{
 			String userID = userIDField.getText();
@@ -106,26 +112,30 @@ public class LoginPage implements ActionListener
 			{
 				resualt = idandPasswords.check(userID, password);
 			} 
-			catch (FileNotFoundException e1) 
+			catch (Exception e1) 
 			{
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
 			if (resualt == 1)
 			{
-				//loginMessage.setForeground(Color.green);
-				//loginMessage.setText("Login Successful");
 				StockChangePage stockChangePage = new StockChangePage(userID);
 			}
+			else if (resualt == -1)
+			{
+				loginMessage.setForeground(Color.red);
+				loginMessage.setText("Password does not match userID");
+			}
+			
 			else
 			{
 				loginMessage.setForeground(Color.red);
-				loginMessage.setText("Incorrect combination of userID and password");
+				loginMessage.setText("userID not found");
 			}
 			
 		}
-		// goto sign up page
+		
+		// signup button, take the user to the sign up page
 		if (e.getSource()==signUpButton)
 		{
 			frame.dispose();

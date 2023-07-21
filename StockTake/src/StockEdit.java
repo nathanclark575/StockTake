@@ -6,50 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/* Manages all of the opertaions involoving stock.csv */
+
 public class StockEdit
 {
 	
-	// reads the file and prints it
-	public void readAndPrint()
-	{
-		String file = "stock.csv";
-		BufferedReader reader = null;
-		String line = "";
-		
-		try
-		{
-			reader = new BufferedReader(new FileReader(file));
-			while ((line = reader.readLine()) != null)
-			{
-				String[] row = line.split(",");
-				
-				for (String i : row)
-				{
-					System.out.printf("%-10s", i);
-				}
-				
-				System.out.println();
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			try 
-			{
-				reader.close();
-			} 
-			catch (IOException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	// search for a values and return the amount of it
+	// search for a product using its SKU and return the amount of stock for that product, or "None" if it is not listed
 	public String searchCSV(String SKU)
 	{
 		String file = "Stock.csv";
@@ -88,17 +50,13 @@ public class StockEdit
 		return "None";
 	}
 	
-	// change stock of a given product by an ammount that can be entered at the page
+	// change stock of a given product by an amount
 	public void changeStock(String SKU, int change)
 	{
+		// all of the new content of the file is stored in temp, which eventialy replaces the file at the file location of stock.csv
 		File temp = new File("temp.csv");
 		File file = new File("Stock.csv");
-		
-		//BufferedReader br = null;
-		String line = "";
-		
-		//PrintWriter pw = null;
-		
+		String line = "";		
 		
 		try 
 		{
@@ -117,7 +75,6 @@ public class StockEdit
 					String val = row[1];
 					int value = Integer.parseInt(val) + change;
 					pw.println(row[0] + "," + Integer.toString(value));
-					
 				}
 				
 				else
@@ -135,7 +92,6 @@ public class StockEdit
 			File path = new File("Stock.csv");
 			temp.renameTo(path);
 			
-			
 		}
 		
 		catch (Exception e)
@@ -143,10 +99,9 @@ public class StockEdit
 			e.printStackTrace();
 		}
 		
-		
 	}
 	
-	// get product description
+	// get product description based on a SKU, or "None" if that product is not listed
 	public String productDescription(String sku)
 	{
 		File file = new File("Stock.csv");
