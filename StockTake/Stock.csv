@@ -1,4 +1,4 @@
 SKU,STOCK,DESCRIPTION
-A,10
-B,2,jacket
-C,2
+A,10,Shirt
+B,2,Jacket
+C,2,Tie
