@@ -26,7 +26,6 @@ public class StockEdit
 				String[] row = line.split(",");
 				if (row[0].equals(SKU))
 				{
-					System.out.println("Amount of " + SKU + " = " + row[1]);
 					return row[1];
 				}
 			}
@@ -74,7 +73,7 @@ public class StockEdit
 				{
 					String val = row[1];
 					int value = Integer.parseInt(val) + change;
-					pw.println(row[0] + "," + Integer.toString(value));
+					pw.println(row[0] + "," + Integer.toString(value) + "," + row[2]);
 				}
 				
 				else
